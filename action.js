@@ -67,6 +67,7 @@ function bin(historyItems) {
   }
   console.log(items);
 
+  var availableIconList = { facebook: 'facebook.png', google: 'google.png'};
   var iconList = document.getElementById("icon-container");
   for (var i = 0; i < 6; i++) { //TODO: change to 8
       if (i >= items.length) {
@@ -75,6 +76,13 @@ function bin(historyItems) {
       var icon = document.createElement('div');
       icon.className = "icon";
       var img = document.createElement('img');
+      if (items[i][0] in availableIconList) {
+        img.setAttribute('src', items[i][0] + '.png');
+      } else {
+        img.setAttribute('src', 'lemon_cupcake.jpg');
+      }
+      img.setAttribute('alt', items[i][0]);
+
       var visitCountDiv = document.createElement('div');
       visitCountDiv.className = "text";
       var visitCount = document.createElement('div');
