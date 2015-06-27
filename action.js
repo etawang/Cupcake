@@ -31,7 +31,14 @@ function showIcons(divName, items, sortOrder) {
       visitCountDiv.className = "text";
       var visitCount = document.createElement('div');
       visitCount.className = "visits-text";
-      visitCount.appendChild(document.createTextNode(items[i][1] + " Pages"));
+      var numPage;
+      if (items[i][1] == 1) {
+         numPage = document.createTextNode("1 Page");
+      } else {
+         numPage = document.createTextNode(items[i][1] + " Pages");
+      }
+
+      visitCount.appendChild(numPage);
       // TODO: consider displaying visits instead of pages
       visitCountDiv.appendChild(visitCount);
       a.appendChild(img);

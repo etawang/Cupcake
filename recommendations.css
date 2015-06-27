@@ -19,6 +19,7 @@
     font-size: 36px;
     padding-top: 5px;
     width: 60%;
+    height: 50px;
 }
 
 .top-sites {
@@ -39,7 +40,7 @@
 }
 
 .list {
-   border-top: 2px solid #a4f4ff;
+   border-bottom: 2px solid #a4f4ff;
    padding: 10px 20px;
    margin: 5px 0;
 }

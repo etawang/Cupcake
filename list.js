@@ -1,5 +1,10 @@
 // Assumes list - change to other objects if necessary
-function buildHistoryListsDOM(divName, elements){
+function buildHistoryListsDOM(divName, qparam, elements){
+  var domainName = document.createElement('span');
+  domainName.appendChild(document.createTextNode(qparam));
+  var title = document.getElementById("title");
+  title.appendChild(domainName);
+
   var list = document.getElementById(divName);
   for (var i = 0; i < elements.length; i++) {
     var entry = document.createElement('li');
@@ -14,7 +19,7 @@ function buildHistoryListsDOM(divName, elements){
 
 function processHistoryItemsAndBuildList(divName, qparam, historyItems){
   var results = processHistoryItems(qparam, historyItems);
-  buildHistoryListsDOM(divName, results);
+  buildHistoryListsDOM(divName, qparam, results);
 }
 
 // do any necessary filtering
