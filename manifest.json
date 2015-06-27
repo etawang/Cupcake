@@ -13,6 +13,6 @@
 
   "permissions": [
     "history",
-    "tabs",
-  ],
+    "tabs"
+  ]
 }
