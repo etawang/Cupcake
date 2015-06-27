@@ -1,0 +1,60 @@
+body {
+  background: #e0e0e0;
+}
+
+.header {
+  color: #808080;
+  font-size: 36px;
+  height: 100px;
+  margin: 0 auto;
+  padding-top: 20px;
+  padding-left: 40px;
+  width: 800px; 
+}
+
+.icon-container {
+  display: flex;
+  flex-wrap: wrap;
+  height: 400px;
+  margin: 0 auto;
+  width: 800px;
+}
+
+.icon {
+  position: relative;
+}
+
+.icon img, div {
+  height: 150px;
+  margin: 20px;
+  width: 150px;
+}
+
+.icon > img {
+  border-radius: 50%;
+}
+
+.icon > div {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  position: absolute;
+  top: 0;
+}
+
+.visits-text {
+  height: 50%;
+  width: 50%;
+  visibility: hidden;
+}
+
+.icon:hover .visits-text {
+  color: black;
+  flex-grow: none;
+  font-family: "Arial", Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  visibility: visible;
+}
+
