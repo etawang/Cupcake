@@ -1,13 +1,17 @@
 var numHoursPreviousToSearch = 1;
-function getHistory(callback) {
+function getHistory(callback, searchQuery) {
   var microsecondsPerHour = 1000 * 60 * 60;
   var startTime = (new Date).getTime() - microsecondsPerHour * numHoursPreviousToSearch;
+
+  if (!searchQuery){
+    searchQuery = "";
+  }
 
   var numRequestsOutstanding = 0;
 
   chrome.history.search({
-    'text': '',
-    'startTime': startTime
+    'text': searchQuery,
+    'startTime': startTime,
     }, callback);
 }
 
