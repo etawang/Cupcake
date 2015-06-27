@@ -1,4 +1,5 @@
 var numHoursPreviousToSearch = 1;
+var showSimilarSites = false;
 function getHistory(divName, callback) {
   var microsecondsPerHour = 1000 * 60 * 60;
   var startTime = (new Date).getTime() - microsecondsPerHour * numHoursPreviousToSearch;
@@ -67,8 +68,17 @@ function bin(historyItems) {
     var host = items[i][0];
     items[i][1] = numURLs[host][0];
   }
-  buildSimilarSitesDOM(urlList, websiteTable);
+  if (showSimilarSites){
+    buildSimilarSitesDOM(urlList, websiteTable);
+  } else {
+    var list = document.getElementById("similar-list");
+    var entry = document.createElement('li');
+    entry.className = "failure";
+    entry.appendChild(document.createTextNode("Similar sites is turned off"));
+    list.appendChild(entry);
+  }
 }
+
 
 function buildSimilarSitesDOM(urlList, websiteTable){
   var similarSiteList = getSimilarSites(urlList, websiteTable);
