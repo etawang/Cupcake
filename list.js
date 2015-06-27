@@ -6,6 +6,9 @@ function buildHistoryListsDOM(divName, qparam, elements){
   title.appendChild(domainName);
 
   var list = document.getElementById(divName);
+  while (list.firstChild) {
+      list.removeChild(list.firstChild);
+  }
   for (var i = 0; i < elements.length; i++) {
     var entry = document.createElement('li');
     entry.className = "page";
@@ -47,4 +50,8 @@ function displayList(divName, historyItems) {
 
 document.addEventListener('DOMContentLoaded', function(){
   getHistory(function(h) { displayList("pages-list", h) });
+  document.getElementById("search-button").addEventListener('click', function(){
+    var query = document.getElementById("search-text").value;
+    getHistory(function(h) { displayList("pages-list", h)}, query);
+  });
 });
