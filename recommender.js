@@ -101,10 +101,14 @@ function buildPageDOM(url, title){
   entry.className = "page";
   var newLink = document.createElement('a');
   var favicon = document.createElement('img');
-  favicon.setAttribute("src", fullurl + "favicon.ico")
+  favicon.setAttribute("src", url + "favicon.ico");
+  favicon.onError = function() {
+    this.setAttribute("src",'img/icon.png');
+  };
   newLink.appendChild(favicon);
-  newLink.setAttribute("href", fullurl);
+  newLink.setAttribute("href", url);
   entry.appendChild(newLink);
+  return entry;
 }
 
 function getSimilarSites(urlList, websiteTable){
