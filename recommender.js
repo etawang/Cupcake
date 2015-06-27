@@ -72,7 +72,7 @@ function bin(historyItems) {
     buildSimilarSitesDOM(urlList, websiteTable);
   } else {
     var list = document.getElementById("similar-list");
-    var entry = document.createElement('li');
+    var entry = document.createElement('div');
     entry.className = "failure";
     entry.appendChild(document.createTextNode("Similar sites is turned off"));
     list.appendChild(entry);
@@ -84,20 +84,27 @@ function buildSimilarSitesDOM(urlList, websiteTable){
   var similarSiteList = getSimilarSites(urlList, websiteTable);
   var list = document.getElementById("similar-list");
   if (!similarSiteList){
-    var entry = document.createElement('li');
+    var entry = document.createElement('div');
     entry.className = "failure";
     entry.appendChild(document.createTextNode("Daily query limit exceeded"));
     list.appendChild(entry);
   }
   for (var i = 0; i < similarSiteList.length; i++) {
-    var entry = document.createElement('li');
-    entry.className = "recommendation";
-    var newLink = document.createElement('a');
-    newLink.appendChild(document.createTextNode(similarSiteList[i][0]));
-    newLink.setAttribute("href", "http://" + similarSiteList[i][0]);
-    entry.appendChild(newLink);
+    var fullurl = "http://" + similarSiteList[i][0];
+    var entry = buildPageDOM(fullurl, similarSiteList[i][0]);
     list.appendChild(entry);
   }
+}
+
+function buildPageDOM(url, title){
+  var entry = document.createElement('div');
+  entry.className = "page";
+  var newLink = document.createElement('a');
+  var favicon = document.createElement('img');
+  favicon.setAttribute("src", fullurl + "favicon.ico")
+  newLink.appendChild(favicon);
+  newLink.setAttribute("href", fullurl);
+  entry.appendChild(newLink);
 }
 
 function getSimilarSites(urlList, websiteTable){
@@ -183,7 +190,7 @@ function binURLs(urlList) {
 
 function topRecentlyVisited() {
   // positive signals: recency of visit, (time spent on a site,) similarity to open tabs
-  // negative signals: 
+  // negative signals:
 }
 
 document.addEventListener('DOMContentLoaded', function(){
