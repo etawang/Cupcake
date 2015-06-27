@@ -69,7 +69,7 @@ function bin(historyItems) {
 
   var availableIconList = { facebook: 'facebook.png', google: 'google.png'};
   var iconList = document.getElementById("icon-container");
-  for (var i = 0; i < 6; i++) { //TODO: change to 8
+  for (var i = 0; i < 7; i++) { 
       if (i >= items.length) {
           break;
       }
@@ -92,6 +92,10 @@ function bin(historyItems) {
       visitCountDiv.appendChild(visitCount);
       icon.appendChild(img);
       icon.appendChild(visitCountDiv);
+      var name = document.createElement('div');
+      name.className = "name";
+      name.appendChild(document.createTextNode(items[i][0]));
+      icon.appendChild(name);
       iconList.appendChild(icon);
   }
 
