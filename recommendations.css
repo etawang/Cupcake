@@ -1,0 +1,35 @@
+body {
+  background: #e0e0e0;
+}
+
+.header {
+  display: flex;
+  height: 100px;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding-top: 20px;
+  padding-left: 20px;
+  width: 800px; 
+}
+
+.title {
+  color: #808080;
+  font-size: 36px;
+  width: 50%;
+}
+
+.most-visited {
+  background: #3366ff;
+  border-radius: 5px;
+  color: #5a5a5a;
+  cursor: pointer;
+  font-size: 22px;
+  height: 50%;
+  width: auto;
+}
+
+.most-visited > a {
+  width: 90%;
+}
+
+
