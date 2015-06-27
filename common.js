@@ -11,39 +11,6 @@ function getHistory(callback) {
     }, callback);
 }
 
-// Assumes list - change to other objects if necessary
-function buildHistoryListsDOM(divName, elements){
-  var list = document.getElementById(divName);
-  for (var i = 0; i < elements.length; i++) {
-    var entry = document.createElement('li');
-    entry.className = "page";
-    var newLink = document.createElement('a');
-    newLink.appendChild(document.createTextNode(elements[i].title));
-    newLink.setAttribute("href", elements[i].url);
-    entry.appendChild(newLink);
-    list.appendChild(entry);
-  }
-}
-
-function processHistoryItemsAndBuildList(historyItems){
-  var results = processHistoryItems(historyItems);
-  buildHistoryListsDOM("pages-list", results);
-}
-
-// do any necessary filtering
-function processHistoryItems(historyItems) {
-  var results = [];
-  for (var i = 0; i < historyItems.length; i++) {
-    var title = historyItems[i].title;
-    if (title) {
-      results.push({title:title, url:historyItems[i].url});
-    } else {
-      results.push({title:historyItems[i].url, url: historyItems[i].url});
-    }
-  }
-  return results;
-}
-
 function bin(historyItems) {
   var urlList = [];
   for (var i = 0; i < historyItems.length; i++) {
@@ -51,7 +18,7 @@ function bin(historyItems) {
     urlList.push([item.url, item.visitCount]);
   }
   var numURLs = binURLs(urlList);
-  
+  console.log(numURLs);
   // Sort hosts by number of visits
   var items = Object.keys(numURLs).map(function(key) {
         return [key, numURLs[key][1]];
@@ -65,7 +32,6 @@ function bin(historyItems) {
     var host = items[i][0];
     items[i][1] = numURLs[host][0];
   }
-  console.log(items);
   return items;
 }
 
