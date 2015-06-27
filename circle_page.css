@@ -34,7 +34,7 @@ body {
   width: 90%;
 }
 
-.icon-container {
+#icon-container {
   display: flex;
   flex-wrap: wrap;
   height: 400px;
@@ -53,6 +53,7 @@ body {
 }
 
 .icon > img {
+  background: blue;
   border-radius: 50%;
 }
 

@@ -66,6 +66,27 @@ function bin(historyItems) {
     items[i][1] = numURLs[host][0];
   }
   console.log(items);
+
+  var iconList = document.getElementById("icon-container");
+  for (var i = 0; i < 6; i++) { //TODO: change to 8
+      if (i >= items.length) {
+          break;
+      }
+      var icon = document.createElement('div');
+      icon.className = "icon";
+      var img = document.createElement('img');
+      var visitCountDiv = document.createElement('div');
+      visitCountDiv.className = "text";
+      var visitCount = document.createElement('div');
+      visitCount.className = "visits-text";
+      visitCount.appendChild(document.createTextNode(items[i][1] + " Pages"));
+      // TODO: consider displaying visits instead of pages
+      visitCountDiv.appendChild(visitCount);
+      icon.appendChild(img);
+      icon.appendChild(visitCountDiv);
+      iconList.appendChild(icon);
+  }
+
   return items;
 }
 
@@ -92,6 +113,6 @@ function binURLs(urlList) {
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-  getHistory("test_div", bin);
+  getHistory("icon-container", bin); 
 });
 
