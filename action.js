@@ -7,6 +7,8 @@ function showIcons(divName, items) {
       }
       var icon = document.createElement('div');
       icon.className = "icon";
+      var a = document.createElement('a');
+      a.href = "chrome-extension://" + chrome.runtime.id + "/list.html?host=" + items[i][0];
       var img = document.createElement('img');
       if (items[i][0] in availableIconList) {
         img.setAttribute('src', 'img/' + items[i][0] + '.png');
@@ -22,8 +24,9 @@ function showIcons(divName, items) {
       visitCount.appendChild(document.createTextNode(items[i][1] + " Pages"));
       // TODO: consider displaying visits instead of pages
       visitCountDiv.appendChild(visitCount);
-      icon.appendChild(img);
-      icon.appendChild(visitCountDiv);
+      a.appendChild(img);
+      a.appendChild(visitCountDiv);
+      icon.appendChild(a);
       var name = document.createElement('div');
       name.className = "name";
       name.appendChild(document.createTextNode(items[i][0]));
