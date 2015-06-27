@@ -90,9 +90,22 @@ function bin(historyItems) {
   return items;
 }
 
-function getHostname(url) {
+// e.g., "www.stackoverflow.com"
+function getFullHostname(url) {
   var a = $('<a>', { href:url } )[0];
   return a.hostname
+}
+
+// e.g., "stackoverflow"
+function getHostname(url) {
+  var fullHost = getFullHostname(url);
+  var lastDot = fullHost.lastIndexOf(".");
+  var slice = fullHost.slice(0, lastDot);
+  lastDot = slice.lastIndexOf(".");
+  if (lastDot == -1) {
+    return slice;
+  }
+  return slice.slice(lastDot + 1);
 }
 
 function binURLs(urlList) {
