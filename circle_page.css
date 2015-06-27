@@ -1,5 +1,5 @@
 .container { 
-  background: #e0e0e0;
+  background: #a4f4ff;
   width: 800px;
   margin: 0 auto;
   height: 100%;
@@ -9,7 +9,7 @@
   display: flex;
   height: 75px;
   justify-content: space-between;
-  width: 100%;
+  width: 750px;
   padding-top: 20px;
   padding-left: 20px; 
 }
@@ -17,11 +17,13 @@
 .title {
   color: #808080;
   font-size: 36px;
-  width: 50%;
+  padding-top: 5px;
+  width: 40%;
 }
 
 .recommendations {
-  background: #ff6600;
+  background: #ebebeb;
+  border: 4px solid #73edfd;
   border-radius: 5px;
   color: #5a5a5a;
   cursor: pointer;
@@ -41,10 +43,8 @@
   text-decoration: none;
 }
 
-
-
 #icon-container {
-  background: #ebebeb;
+  background: #defbff;
   display: flex;
   flex-wrap: wrap;
   height: 400px;
