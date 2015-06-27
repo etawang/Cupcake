@@ -1,4 +1,14 @@
-function showIcons(divName, items) {
+function sortAlphabetical() {
+  $(".icon").remove();
+  getHistory(function(h) { displayBubbles("icon-container", h, "alpha") });
+}
+
+function sortVisits() {
+  $(".icon").remove();
+  getHistory(function(h) { displayBubbles("icon-container", h, "visits") });
+}
+
+function showIcons(divName, items, sortOrder) {
   var availableIconList = { facebook: 'facebook.png', google: 'google.png'};
   var iconList = document.getElementById(divName);
   for (var i = 0; i < 7; i++) { 
@@ -35,8 +45,7 @@ function showIcons(divName, items) {
   }
 }
 
-
-function displayBubbles(divName, historyItems) {
+function displayBubbles(divName, historyItems, sortOrder) {
   var items = bin(historyItems);
   showIcons(divName, items);
 }
