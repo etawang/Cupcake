@@ -11,7 +11,9 @@ function getHistory(callback) {
     }, callback);
 }
 
-function bin(historyItems) {
+function bin(historyItems, sortOrder) {
+  if (typeof(sortOrder) === 'undefined') sortOrder="visits";
+
   var urlList = [];
   for (var i = 0; i < historyItems.length; i++) {
     var item = historyItems[i];
@@ -24,9 +26,17 @@ function bin(historyItems) {
         return [key, numURLs[key][1]];
   });
 
-  items.sort(function(first, second) {
-    return second[1] > first[1]; 
-  });
+  var sortFn;
+  if (sortOrder == "visits") {
+    sortFn = function(first, second) {
+      return second[1] > first[1];
+    }
+  } else if (sortOrder == "alpha") {
+    sortFn = function(first, second) {
+      return first[0] > second[0];
+    }
+  }
+  items.sort(sortFn);
 
   for (var i = 0; i < items.length; i++) {
     var host = items[i][0];

@@ -181,6 +181,11 @@ function binURLs(urlList) {
   return hostBinning;
 }
 
+function topRecentlyVisited() {
+  // positive signals: recency of visit, (time spent on a site,) similarity to open tabs
+  // negative signals: 
+}
+
 document.addEventListener('DOMContentLoaded', function(){
   getHistory("test_div", bin);
 });
