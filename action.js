@@ -11,15 +11,34 @@ function getHistory(divName, callback) {
     }, callback);
 }
 
+// Assumes list - change to other objects if necessary
+function buildHistoryListsDOM(divName, elements){
+  var list = document.getElementById(divName);
+  for (var i = 0; i < elements.length; i++){
+    var entry = document.createElement('li');
+    entry.appendChild(document.createTextNode(elements[i].title));
+    list.appendChild(entry);
+  }
+
+}
+
+function processHistoryItemsAndBuildList(historyItems){
+  var results = processHistoryItems(historyItems);
+  buildHistoryListsDOM("pages-list", results);
+}
+
+// do any necessary filtering
 function processHistoryItems(historyItems) {
+  var results = [];
   for (var i = 0; i < historyItems.length; i++) {
     var title = historyItems[i].title;
     if (title) {
-      console.log(historyItems[i].title)
+      results.push({title:title, url:historyItems[i].url});
     } else {
-      console.log(historyItems[i].url)
+      results.push({title:historyItems[i].url, url: historyItems[i].url});
     }
   }
+  return results;
 }
 
 function bin(historyItems) {
