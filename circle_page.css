@@ -121,7 +121,7 @@
   text-align: center;
 }
 
-.icon:hover {
+.icon:hover img {
   transition: opacity .12s ease-in-out; 
   opacity: 0.5;
 }
