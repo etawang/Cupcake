@@ -1,0 +1,37 @@
+.header {
+  align-items: center;
+  display: flex;
+  margin: 0 auto;
+  width: 800px;
+}
+
+.back-button {
+  height: 26px;
+  margin: 10px;
+}
+
+h2 {
+  font-size: 26px;
+  color: #808080;
+  padding-top: 20px;
+}
+
+#pages-list {
+  margin: 0 auto;
+  width: 710px;
+}
+
+.page {
+  font-size: 15px;
+  margin: 10px 0;
+  width: 700px;
+  height: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page:before {
+    content: "\2610";
+    color: gray;
+    margin-right: 5px;
+}
