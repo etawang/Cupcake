@@ -29,11 +29,11 @@ function bin(historyItems, sortOrder) {
   var sortFn;
   if (sortOrder == "visits") {
     sortFn = function(first, second) {
-      return second[1] > first[1]; 
+      return second[1] > first[1];
     }
   } else if (sortOrder == "alpha") {
     sortFn = function(first, second) {
-      return second[0] > first[0]; 
+      return first[0] > second[0];
     }
   }
   items.sort(sortFn);
