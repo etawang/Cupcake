@@ -16,7 +16,7 @@ function buildHistoryListsDOM(divName, elements){
   var list = document.getElementById(divName);
   for (var i = 0; i < elements.length; i++){
     var entry = document.createElement('li');
-    entry.appendChild(document.createTextNode(elements[i]));
+    entry.appendChild(document.createTextNode(elements[i].title));
     list.appendChild(entry);
   }
 
@@ -33,9 +33,9 @@ function processHistoryItems(historyItems) {
   for (var i = 0; i < historyItems.length; i++) {
     var title = historyItems[i].title;
     if (title) {
-      results.push(title);
+      results.push({title:title, url:historyItems[i].url});
     } else {
-      results.push(historyItems[i].url);
+      results.push({title:historyItems[i].url, url: historyItems[i].url});
     }
   }
   return results;
