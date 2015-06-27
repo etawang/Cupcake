@@ -14,9 +14,13 @@ function getHistory(divName, callback) {
 // Assumes list - change to other objects if necessary
 function buildHistoryListsDOM(divName, elements){
   var list = document.getElementById(divName);
-  for (var i = 0; i < elements.length; i++){
+  for (var i = 0; i < elements.length; i++) {
     var entry = document.createElement('li');
-    entry.appendChild(document.createTextNode(elements[i].title));
+    entry.className = "page";
+    var newLink = document.createElement('a');
+    newLink.appendChild(document.createTextNode(elements[i].title));
+    newLink.setAttribute("href", elements[i].url);
+    entry.appendChild(newLink);
     list.appendChild(entry);
   }
 }
