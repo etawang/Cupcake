@@ -8,18 +8,37 @@ function buildUrlList(divName) {
   chrome.history.search({
     'text': '',
     'startTime': startTime
-    }, processHistoryItems);
+    }, processHistoryItemsAndBuildList);
 }
 
+// Assumes list - change to other objects if necessary
+function buildHistoryListsDOM(divName, elements){
+  var list = document.getElementById(divName);
+  for (var i = 0; i < elements.length; i++){
+    var entry = document.createElement('li');
+    entry.appendChild(document.createTextNode(elements[i]));
+    list.appendChild(entry);
+  }
+
+}
+
+function processHistoryItemsAndBuildList(historyItems){
+  var results = processHistoryItems(historyItems);
+  buildHistoryListsDOM("pages-list", results);
+}
+
+// do any necessary filtering
 function processHistoryItems(historyItems) {
+  var results = [];
   for (var i = 0; i < historyItems.length; i++) {
     var title = historyItems[i].title;
     if (title) {
-      console.log(historyItems[i].title)
+      results.push(title);
     } else {
-      console.log(historyItems[i].url)
+      results.push(historyItems[i].url);
     }
   }
+  return results;
 }
 
 document.addEventListener('DOMContentLoaded', function(){
