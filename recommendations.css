@@ -61,22 +61,26 @@
 }
 
 .page img {
+   margin: 5px;
    height: 32px;
    width: auto;
 }
 
 .content {
+   border: 5px solid #b1e2e9;
    background-color: #EBFFFF; 
    visibility: collapse;
    position: absolute;
    left: 287px;
    width: 600px;
+   margin-top: 5px;
    padding: 5px 10px;
 }
 
 
 .page img:hover {
-   border: 5px solid #ebffff;
+   margin: 0;
+   border: 5px dashed #b1e2e9;
 }
 
 .page:hover .content {
@@ -84,7 +88,8 @@
 }
 
 .page:hover {
-   height: 110px;
+   transition: height .5s ease-in-out;
+   height: 130px;
 }
 
 
