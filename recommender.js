@@ -73,12 +73,18 @@ function bin(historyItems) {
 function buildSimilarSitesDOM(urlList, websiteTable){
   var similarSiteList = getSimilarSites(urlList, websiteTable);
   var list = document.getElementById("similar-list");
+  if (!similarSiteList){
+    var entry = document.createElement('li');
+    entry.className = "failure";
+    entry.appendChild(document.createTextNode("Daily query limit exceeded"));
+    list.appendChild(entry);
+  }
   for (var i = 0; i < similarSiteList.length; i++) {
     var entry = document.createElement('li');
     entry.className = "recommendation";
     var newLink = document.createElement('a');
     newLink.appendChild(document.createTextNode(similarSiteList[i][0]));
-    newLink.setAttribute("href", similarSiteList[i][0]);
+    newLink.setAttribute("href", "http://" + similarSiteList[i][0]);
     entry.appendChild(newLink);
     list.appendChild(entry);
   }
@@ -86,8 +92,11 @@ function buildSimilarSitesDOM(urlList, websiteTable){
 
 function getSimilarSites(urlList, websiteTable){
   var similarSiteScores = {};
-  for (var i = 0; i < 5; i++){
+  for (var i = 0; i < 5 && i < urlList.length; i++){
     var similarSites = getSimilarSiteForSite(getFullHostname(urlList[i][0]));
+    if (similarSites.status === "daily query limit exceeded"){
+      return false;
+    }
     if (similarSites.num != 0){
       var url = removeHttp(similarSites.r0);
       if (!(url in websiteTable)){
