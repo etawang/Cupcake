@@ -1,4 +1,4 @@
-var numHoursPreviousToSearch = 1;
+var numHoursPreviousToSearch = 2;
 var showSimilarSites = false;
 function getHistory(divName, callback) {
   var microsecondsPerHour = 1000 * 60 * 60;
@@ -100,25 +100,30 @@ function buildPageDOM(url, title){
   var entry = document.createElement('div');
   entry.className = "page";
   var newLink = document.createElement('a');
-  var favicon = document.createElement('img');
-  favicon.setAttribute("src", url + "favicon.ico");
-  favicon.onError = function() {
-    this.setAttribute("src",'img/icon.png');
+  var favicon = new Image();
+  favicon.onerror = function() {
+    this.onerror = null;
+    this.src = "img/icon.png";
   };
+  favicon.src = url + "favicon.ico";
   newLink.appendChild(favicon);
   newLink.setAttribute("href", url);
   entry.appendChild(newLink);
+  var content = document.createElement('div');
+  content.className = "content";
+  content.innerHTML = "<p>" + title + "</p>\n" + "<p>" + url + "</p>\n"
+  entry.appendChild(content);
   return entry;
 }
 
 function getSimilarSites(urlList, websiteTable){
-  var similarSiteScores = {};
-  for (var i = 0; i < 5 && i < urlList.length; i++){
-    var similarSites = getSimilarSiteForSite(getFullHostname(urlList[i][0]));
-    if (similarSites.status === "daily query limit exceeded"){
-      return false;
-    }
-    if (similarSites.num != 0){
+var similarSiteScores = {};
+for (var i = 0; i < 5 && i < urlList.length; i++){
+  var similarSites = getSimilarSiteForSite(getFullHostname(urlList[i][0]));
+  if (similarSites.status === "daily query limit exceeded"){
+    return false;
+  }
+  if (similarSites.num != 0){
       var url = removeHttp(similarSites.r0);
       if (!(url in websiteTable)){
         if (url in similarSiteScores)
