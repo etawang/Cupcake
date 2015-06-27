@@ -90,8 +90,8 @@ function getSimilarSites(urlList, websiteTable){
     var similarSites = getSimilarSiteForSite(getFullHostname(urlList[i][0]));
     if (similarSites.num != 0){
       var url = removeHttp(similarSites.r0);
-      if (!websiteTable.hasKey(url){
-        if (similarSiteScores.hasKey(url))
+      if (!(url in websiteTable)){
+        if (url in similarSiteScores)
           similarSiteScores[url] += 1;
         else
           similarSiteScores[url] = 1;
@@ -124,7 +124,7 @@ function getSimilarSiteForSite(sitelink){
 
 // http://www.stackoverflow.com -> www.stackoverflow.com
 function removeHttp(url){
-  return url.split("://")pop();
+  return url.split("://").pop();
 }
 
 // e.g., "www.stackoverflow.com"
