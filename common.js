@@ -1,4 +1,4 @@
-var numHoursPreviousToSearch = 1;
+var numHoursPreviousToSearch = 72;
 function getHistory(callback, searchQuery) {
   var microsecondsPerHour = 1000 * 60 * 60;
   var startTime = (new Date).getTime() - microsecondsPerHour * numHoursPreviousToSearch;
@@ -12,6 +12,7 @@ function getHistory(callback, searchQuery) {
   chrome.history.search({
     'text': searchQuery,
     'startTime': startTime,
+    'maxResults': 1000,
     }, callback);
 }
 
@@ -24,7 +25,6 @@ function bin(historyItems, sortOrder) {
     urlList.push([item.url, item.visitCount]);
   }
   var numURLs = binURLs(urlList);
-  console.log(numURLs);
   // Sort hosts by number of visits
   var items = Object.keys(numURLs).map(function(key) {
         return [key, numURLs[key][1]];
@@ -33,11 +33,19 @@ function bin(historyItems, sortOrder) {
   var sortFn;
   if (sortOrder == "visits") {
     sortFn = function(first, second) {
-      return second[1] > first[1];
+      if (second[1] > first[1])
+        return 1;
+      if (first[1] > second[1])
+        return -1;
+      return 0;
     }
   } else if (sortOrder == "alpha") {
     sortFn = function(first, second) {
-      return first[0] > second[0];
+      if (first[0] > second[0])
+        return 1;
+      if (second[0] > first[0])
+        return -1
+      return 0;
     }
   }
   items.sort(sortFn);
@@ -46,6 +54,7 @@ function bin(historyItems, sortOrder) {
     var host = items[i][0];
     items[i][1] = numURLs[host][0];
   }
+  console.log(items);
   return items;
 }
 
