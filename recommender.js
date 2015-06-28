@@ -50,14 +50,14 @@ function bin(historyItems) {
   var websiteTable = {}
   for (var i = 0; i < historyItems.length; i++) {
     var item = historyItems[i];
-    urlList.push([item.url, item.visitCount]);
+    urlList.push([item.url, item.visitCount, item.title]);
     websiteTable[getFullHostname(item.url)] = item.visitCount;
   }
   var numURLs = binURLs(urlList);
 
   // Sort hosts by number of visits
   var items = Object.keys(numURLs).map(function(key) {
-        return [key, numURLs[key][1]];
+      return [key, numURLs[key][1]];
   });
 
   items.sort(function(first, second) {
@@ -68,6 +68,7 @@ function bin(historyItems) {
     var host = items[i][0];
     items[i][1] = numURLs[host][0];
   }
+  
   if (showSimilarSites){
     buildSimilarSitesDOM(urlList, websiteTable);
   } else {
@@ -77,8 +78,37 @@ function bin(historyItems) {
     entry.appendChild(document.createTextNode("Similar sites is turned off"));
     list.appendChild(entry);
   }
+
+  buildMostPopularPagesDOM();
+  buildMostVisitedPagesDOM(urlList);
 }
 
+function buildMostPopularPagesDOM() {
+    var list = document.getElementById("most-popular-list");
+    list.appendChild(buildPageDOM("http://www.google.com", "Google")); 
+    list.appendChild(buildPageDOM("http://www.facebook.com", "Facebook")); 
+    list.appendChild(buildPageDOM("http://www.youtube.com", "Youtube")); 
+    list.appendChild(buildPageDOM("http://www.baidu.com", "Baidu")); 
+    list.appendChild(buildPageDOM("http://www.yahoo.com", "Yahoo")); 
+    list.appendChild(buildPageDOM("http://www.amazon.com", "Amazon")); 
+    list.appendChild(buildPageDOM("http://www.wikipedia.com", "Wikipedia")); 
+    list.appendChild(buildPageDOM("http://www.qq.com", "QQ")); 
+    list.appendChild(buildPageDOM("http://www.taobao.com", "Taobao")); 
+    list.appendChild(buildPageDOM("http://www.twitter.com", "Twitter")); 
+}
+
+function buildMostVisitedPagesDOM(urlList) {
+  urlList.sort(function(first, second) {
+    return second[2] > first[1];
+  });
+
+  var list = document.getElementById("most-visited-list");
+  for (var i = 0; i < Math.min(10, urlList.length); i++) {
+    var page = urlList[i]; 
+    var entry = buildPageDOM(page[0], page[2]);
+    list.appendChild(entry);
+  }
+}
 
 function buildSimilarSitesDOM(urlList, websiteTable){
   var similarSiteList = getSimilarSites(urlList, websiteTable);
@@ -105,7 +135,7 @@ function buildPageDOM(url, title){
     this.onerror = null;
     this.src = "img/icon.png";
   };
-  favicon.src = url + "favicon.ico";
+  favicon.src = getHttpHostname(url) + "favicon.ico";
   newLink.appendChild(favicon);
   newLink.setAttribute("href", url);
   entry.appendChild(newLink);
@@ -166,6 +196,11 @@ function removeHttp(url){
 function getFullHostname(url) {
   var a = $('<a>', { href:url } )[0];
   return a.hostname
+}
+
+// e.g., "http://www.stackoverflow.com"
+function getHttpHostname(url) {
+  return "http://" + getFullHostname(url) + "/";
 }
 
 // e.g., "stackoverflow"
