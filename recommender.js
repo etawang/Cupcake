@@ -1,5 +1,5 @@
 var numHoursPreviousToSearch = 2;
-var showSimilarSites = false;
+var showSimilarSites = true;
 function getHistory(divName, callback) {
   var microsecondsPerHour = 1000 * 60 * 60;
   var startTime = (new Date).getTime() - microsecondsPerHour * numHoursPreviousToSearch;
@@ -148,7 +148,7 @@ function buildPageDOM(url, title){
 
 function getSimilarSites(urlList, websiteTable){
 var similarSiteScores = {};
-for (var i = 0; i < 5 && i < urlList.length; i++){
+for (var i = 0; i < 10 && i < urlList.length; i++){
   var similarSites = getSimilarSiteForSite(getFullHostname(urlList[i][0]));
   if (similarSites.status === "daily query limit exceeded"){
     return false;
@@ -232,12 +232,141 @@ function binURLs(urlList) {
   return hostBinning;
 }
 
-function topRecentlyVisited() {
-  // positive signals: recency of visit, (time spent on a site,) similarity to open tabs
-  // negative signals:
+function buildTopRecentlyVisited(urlList){
+  var list = document.getElementById("recent-list");
+  for (var i = 0; i < urlList.length; i++) {
+    var fullurl = urlList[i][0];
+    var entry = buildPageDOM(fullurl, urlList[i][1]);
+    list.appendChild(entry);
+  }
+}
+
+function sampleTen(hostBinning, props) {
+  var hostItems = hostBinning;
+  var urlList = [];
+  while (urlList.length < 10 && props.length > 0) {
+    var host = props.pop()[0];
+    if (host == "thisapp_total") {
+      continue;
+    }
+    var histItems = hostItems[host];
+    for (var i = 0; i < Math.min(histItems.length, 3); i++) {
+      var title = histItems[i].title;
+      if (!title) {
+        title = "";
+      }
+      urlList.push([histItems[i].url, title]);
+    }
+  }
+  buildTopRecentlyVisited(urlList);
+}
+
+// Returns proportions of visits that have been made in last 2 hours.
+function getProportion(hostBinning, acc) {
+  // Milliseconds
+  /* for (var host in acc) {
+    if (acc.hasOwnProperty(host)) {
+      var total = 0;
+      var count = 0;
+      for (var i = 0; i < acc[host].length; i++) {
+        var visitTime = acc[host][i].visitTime;
+        if (visitTime < 
+            (curDate - 60 * 60 * 1000 * numHoursPreviousToSearch)) {
+              continue;
+            }
+        if (visitTime && visitTime > recency) {
+          count++;
+        }
+        total++;
+      }
+      props[host] = count / total;
+    }
+  } */
+  var props = [];
+  var total = acc["thisapp_total"];
+  for (var host in acc) {
+    if (acc.hasOwnProperty(host)) {
+      props.push([host, acc[host] / total]);
+    }
+  }
+  console.log(props);
+  props.sort(function (first, second) {
+    first[1] - second[1];
+  });
+
+  sampleTen(hostBinning, props);
+}
+
+function visitRecentProportion(host, visitItems, hostBins, acc) {
+  if (hostBins[1].length == 0) {
+    getProportion(hostBins[0], acc);
+    return;
+  }
+
+  var curDate = (new Date).getTime();
+  var recency = curDate - (0.5 * 60 * 60 * 1000);
+  if (host == "") {
+    acc["thisapp_total"] = 0;
+    var item = hostBins[1].pop();
+    chrome.history.getVisits({url: item[1].url}, function (vitems) {
+      visitRecentProportion(item[0], vitems, hostBins, acc)
+    });
+    return;
+  }
+
+  if (!acc[host]) {
+    acc[host] = 0;
+  }
+  for (var i = 0; i < visitItems.length; i++) {
+    var visitTime = visitItems[i].visitTime;
+    if (visitTime < 
+        (curDate - 60 * 60 * 1000 * numHoursPreviousToSearch)) {
+          continue;
+        }
+    if (visitTime && visitTime > recency) {
+      acc[host]++;
+      acc["thisapp_total"]++;
+    }
+  }
+
+  var item = hostBins[1].pop();
+  chrome.history.getVisits({url: item[1].url}, function (vitems) {
+    visitRecentProportion(item[0], vitems, hostBins, acc)
+  });
+}
+
+function groupURLs(historyItems) {
+  hostBinning = {}
+  for (var i = 0; i < historyItems.length; i++) {
+    var host = getHostname(historyItems[i].url);
+    if (hostBinning[host]) {
+      hostBinning[host].push(historyItems[i]);
+    } else {
+      hostBinning[host] = [historyItems[i]];
+    }
+  }
+
+  hostBinList = [];
+  for (var host in hostBinning) {
+    if (hostBinning.hasOwnProperty(host)) {
+      for (var i = 0; i < hostBinning[host].length; i++) {
+        var item = hostBinning[host][i];
+        hostBinList.push([host, item]);
+      }
+    }
+  }
+  return [hostBinning, hostBinList];
+}
+
+function topRecentlyVisited(historyItems) {
+  // signals: recency of visit, /* time spent on a site, similarity to open tabs, */
+  // whether domain has been visited more than usual in the past couple hours
+  var itemsByDomain = groupURLs(historyItems);
+  visitRecentProportion("", [], itemsByDomain, {});
 }
 
 document.addEventListener('DOMContentLoaded', function(){
   getHistory("test_div", bin);
+  getHistory("test_div", topRecentlyVisited);
 });
 
