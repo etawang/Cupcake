@@ -1,9 +1,15 @@
+var sliceIndex = 0;
+var currSortOrder = "visits";
 function sortAlphabetical() {
+  sliceIndex = 0;
+  currSortOrder = "alpha";
   $(".icon").remove();
   getHistory(function(h) { displayBubbles("icon-container", h, "alpha") });
 }
 
 function sortVisits() {
+  sliceIndex = 0;
+  currSortOrder = "visits";
   $(".icon").remove();
   getHistory(function(h) { displayBubbles("icon-container", h, "visits") });
 }
@@ -11,7 +17,10 @@ function sortVisits() {
 function showIcons(divName, items, sortOrder) {
   var availableIconList = { facebook: 'facebook.png', google: 'google.png'};
   var iconList = document.getElementById(divName);
-  for (var i = 0; i < 7; i++) {
+  while (iconList.firstChild) {
+      iconList.removeChild(iconList.firstChild);
+  }
+  for (var i = 0; i < 8; i++) {
       if (i >= items.length) {
           break;
       }
@@ -53,8 +62,10 @@ function showIcons(divName, items, sortOrder) {
 }
 
 function displayBubbles(divName, historyItems, sortOrder) {
+  if (!sortOrder)
+    sortOrder = currSortOrder;
   var items = bin(historyItems, sortOrder);
-  showIcons(divName, items);
+  showIcons(divName, items.slice(sliceIndex, items.length));
 }
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -69,6 +80,12 @@ document.addEventListener('DOMContentLoaded', function(){
       button.innerHTML = "Sort by Name";
     }
   })
+  document.getElementById("next").addEventListener("click", function(){
+    sliceIndex += 8;
+    getHistory(function(h){
+      displayBubbles("icon-container", h)
+    });
+  });
   getHistory(function(h) { displayBubbles("icon-container", h) });
 });
 
