@@ -166,7 +166,7 @@ function buildTopRecentlyVisited(urlList){
   var list = document.getElementById("recent-list");
   for (var i = 0; i < urlList.length; i++) {
     var fullurl = urlList[i][0];
-    var entry = buildPageDOM(fullurl, urlList[i][0]);
+    var entry = buildPageDOM(fullurl, urlList[i][1]);
     list.appendChild(entry);
   }
 }
