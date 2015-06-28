@@ -139,8 +139,9 @@
 
 .next {
    color: #bebebe;
+   cursor: pointer;
    font-size: 18px;
-   padding-top: 15px;
+   padding: 10px;
    text-align: center;
    width: 100%;
 }
