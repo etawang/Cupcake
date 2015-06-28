@@ -1,5 +1,5 @@
 var numHoursPreviousToSearch = 2;
-var showSimilarSites = true;
+var showSimilarSites = false;
 function getHistory(divName, callback) {
   var microsecondsPerHour = 1000 * 60 * 60;
   var startTime = (new Date).getTime() - microsecondsPerHour * numHoursPreviousToSearch;
@@ -148,7 +148,7 @@ function buildPageDOM(url, title){
 
 function getSimilarSites(urlList, websiteTable){
 var similarSiteScores = {};
-for (var i = 0; i < 10 && i < urlList.length; i++){
+for (var i = 0; i < 5 && i < urlList.length; i++){
   var similarSites = getSimilarSiteForSite(getFullHostname(urlList[i][0]));
   if (similarSites.status === "daily query limit exceeded"){
     return false;

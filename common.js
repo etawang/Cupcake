@@ -25,6 +25,7 @@ function bin(historyItems, sortOrder) {
     urlList.push([item.url, item.visitCount]);
   }
   var numURLs = binURLs(urlList);
+
   // Sort hosts by number of visits
   var items = Object.keys(numURLs).map(function(key) {
         return [key, numURLs[key][1]];
@@ -93,3 +94,7 @@ function binURLs(urlList) {
   return hostBinning;
 }
 
+function stripQueryParams(url) {
+  var i = url.lastIndexOf('?');
+  return url.slice(0, i);
+}
