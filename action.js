@@ -18,7 +18,8 @@ function showIcons(divName, items, sortOrder) {
   var availableIconList = { facebook: 'facebook.png', google: 'google.png',
     wikipedia: 'wikipedia.png', nytimes: 'nytimes.png', github: 'github.png',
     stackoverflow: 'stackoverflow.png', airbnb: 'airbnb.png', dropbox: 'dropbox.png',
-    pinterest: 'pinterest.png', buzzfeed: 'buzzfeed.png', reddit : 'reddit.png'};
+    pinterest: 'pinterest.png', buzzfeed: 'buzzfeed.png', reddit : 'reddit.png',
+    yelp: 'yelp.png', amazon: 'amazon.png', spotify: 'spotify.png'};
   var iconList = document.getElementById(divName);
   while (iconList.firstChild) {
       iconList.removeChild(iconList.firstChild);
