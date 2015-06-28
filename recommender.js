@@ -1,18 +1,15 @@
+var numHoursPreviousToSearch = 2;
 var showSimilarSites = false;
-function similarSites(historyItems) {
-  bin(historyItems);
-  if (showSimilarSites){
-    buildSimilarSitesDOM(urlList, websiteTable);
-  } else {
-    var list = document.getElementById("similar-list");
-    var entry = document.createElement('div');
-    entry.className = "failure";
-    entry.appendChild(document.createTextNode("Similar sites is turned off"));
-    list.appendChild(entry);
-  }
+function getHistory(divName, callback) {
+  var microsecondsPerHour = 1000 * 60 * 60;
+  var startTime = (new Date).getTime() - microsecondsPerHour * numHoursPreviousToSearch;
 
-  buildMostPopularPagesDOM();
-  buildMostVisitedPagesDOM(urlList);
+  var numRequestsOutstanding = 0;
+
+  chrome.history.search({
+    'text': '',
+    'startTime': startTime
+    }, callback);
 }
 
 // Assumes list - change to other objects if necessary
@@ -48,6 +45,43 @@ function processHistoryItems(historyItems) {
   return results;
 }
 
+function bin(historyItems) {
+  var urlList = [];
+  var websiteTable = {}
+  for (var i = 0; i < historyItems.length; i++) {
+    var item = historyItems[i];
+    urlList.push([item.url, item.visitCount, item.title]);
+    websiteTable[getFullHostname(item.url)] = item.visitCount;
+  }
+  var numURLs = binURLs(urlList);
+
+  // Sort hosts by number of visits
+  var items = Object.keys(numURLs).map(function(key) {
+      return [key, numURLs[key][1]];
+  });
+
+  items.sort(function(first, second) {
+    return second[1] > first[1];
+  });
+
+  for (var i = 0; i < items.length; i++) {
+    var host = items[i][0];
+    items[i][1] = numURLs[host][0];
+  }
+  
+  if (showSimilarSites){
+    buildSimilarSitesDOM(urlList, websiteTable);
+  } else {
+    var list = document.getElementById("similar-list");
+    var entry = document.createElement('div');
+    entry.className = "failure";
+    entry.appendChild(document.createTextNode("Similar sites is turned off"));
+    list.appendChild(entry);
+  }
+
+  buildMostPopularPagesDOM();
+  buildMostVisitedPagesDOM(urlList);
+}
 
 function buildMostPopularPagesDOM() {
     var list = document.getElementById("most-popular-list");
@@ -158,8 +192,44 @@ function removeHttp(url){
   return url.split("://").pop();
 }
 
-function getHttpHostname(url){
-  return "http://" + url + "/";
+// e.g., "www.stackoverflow.com"
+function getFullHostname(url) {
+  var a = $('<a>', { href:url } )[0];
+  return a.hostname
+}
+
+// e.g., "http://www.stackoverflow.com"
+function getHttpHostname(url) {
+  return "http://" + getFullHostname(url) + "/";
+}
+
+// e.g., "stackoverflow"
+function getHostname(url) {
+  var fullHost = getFullHostname(url);
+  var lastDot = fullHost.lastIndexOf(".");
+  var slice = fullHost.slice(0, lastDot);
+  lastDot = slice.lastIndexOf(".");
+  if (lastDot == -1) {
+    return slice;
+  }
+  return slice.slice(lastDot + 1);
+}
+
+function binURLs(urlList) {
+  hostBinning = {}
+  for (var i = 0; i < urlList.length; i++) {
+    var url = urlList[i][0];
+    var visits = urlList[i][1];
+    var host = getHostname(url);
+    if (hostBinning[host]) {
+      var numUrls = hostBinning[host][0] + 1;
+      var numVisits = hostBinning[host][1] + visits;
+      hostBinning[host] = [numUrls, numVisits];
+    } else {
+      hostBinning[host] = [1, visits];
+    }
+  }
+  return hostBinning;
 }
 
 function buildTopRecentlyVisited(urlList){
@@ -296,6 +366,7 @@ function topRecentlyVisited(historyItems) {
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-  getHistory(function (h) { topRecentlyVisited(h, 'visits') });
+  getHistory("test_div", bin);
+  getHistory("test_div", topRecentlyVisited);
 });
 
