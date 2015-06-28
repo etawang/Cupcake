@@ -1,13 +1,17 @@
 var numHoursPreviousToSearch = 1;
-function getHistory(callback) {
+function getHistory(callback, searchQuery) {
   var microsecondsPerHour = 1000 * 60 * 60;
   var startTime = (new Date).getTime() - microsecondsPerHour * numHoursPreviousToSearch;
+
+  if (!searchQuery){
+    searchQuery = "";
+  }
 
   var numRequestsOutstanding = 0;
 
   chrome.history.search({
-    'text': '',
-    'startTime': startTime
+    'text': searchQuery,
+    'startTime': startTime,
     }, callback);
 }
 
@@ -29,11 +33,11 @@ function bin(historyItems, sortOrder) {
   var sortFn;
   if (sortOrder == "visits") {
     sortFn = function(first, second) {
-      return second[1] > first[1]; 
+      return second[1] > first[1];
     }
   } else if (sortOrder == "alpha") {
     sortFn = function(first, second) {
-      return second[0] > first[0]; 
+      return first[0] > second[0];
     }
   }
   items.sort(sortFn);

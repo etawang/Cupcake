@@ -19,6 +19,7 @@
     font-size: 36px;
     padding-top: 5px;
     width: 60%;
+    height: 50px;
 }
 
 .top-sites {
@@ -39,25 +40,56 @@
 }
 
 .list {
+   border-bottom: 2px solid #a4f4ff;
    padding: 10px 20px;
-   border-top, border-bottom: 1px solid #a4f4ff;
+   margin: 5px 0;
 }
 
 .list-title {
    padding-left: 10px;
+   padding-bottom: 10px;
    font-size: 30px;
-   color: white;
+   color: #bebebe;
 }
 
 .page-list {
    display: flex;
 }
 
-.page-list div {
-   padding: 10px;
+.page {
+   margin: 0 10px;
 }
 
-.page-list div img {
+.page img {
+   margin: 5px;
    height: 32px;
    width: auto;
 }
+
+.content {
+   border: 5px solid #b1e2e9;
+   background-color: #EBFFFF; 
+   visibility: collapse;
+   position: absolute;
+   left: 287px;
+   width: 600px;
+   margin-top: 5px;
+   padding: 5px 10px;
+}
+
+
+.page img:hover {
+   margin: 0;
+   border: 5px dashed #b1e2e9;
+}
+
+.page:hover .content {
+   visibility: visible;
+}
+
+.page:hover {
+   transition: height .5s ease-in-out;
+   height: 130px;
+}
+
+

@@ -11,7 +11,7 @@ function sortVisits() {
 function showIcons(divName, items, sortOrder) {
   var availableIconList = { facebook: 'facebook.png', google: 'google.png'};
   var iconList = document.getElementById(divName);
-  for (var i = 0; i < 7; i++) { 
+  for (var i = 0; i < 7; i++) {
       if (i >= items.length) {
           break;
       }
@@ -31,7 +31,14 @@ function showIcons(divName, items, sortOrder) {
       visitCountDiv.className = "text";
       var visitCount = document.createElement('div');
       visitCount.className = "visits-text";
-      visitCount.appendChild(document.createTextNode(items[i][1] + " Pages"));
+      var numPage;
+      if (items[i][1] == 1) {
+         numPage = document.createTextNode("1 Page");
+      } else {
+         numPage = document.createTextNode(items[i][1] + " Pages");
+      }
+
+      visitCount.appendChild(numPage);
       // TODO: consider displaying visits instead of pages
       visitCountDiv.appendChild(visitCount);
       a.appendChild(img);
@@ -46,11 +53,22 @@ function showIcons(divName, items, sortOrder) {
 }
 
 function displayBubbles(divName, historyItems, sortOrder) {
-  var items = bin(historyItems);
+  var items = bin(historyItems, sortOrder);
   showIcons(divName, items);
 }
 
 document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById("toggle").addEventListener("click", function(){
+    var button = document.getElementById("toggle");
+    if (button.innerHTML == "Sort by Name"){
+      sortAlphabetical();
+      button.innerHTML = "Sort by Visits";
+    } else {
+      console.log("calling sortVisits");
+      sortVisits();
+      button.innerHTML = "Sort by Name";
+    }
+  })
   getHistory(function(h) { displayBubbles("icon-container", h) });
 });
 

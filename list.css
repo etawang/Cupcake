@@ -1,8 +1,27 @@
+.container {
+    background: #a4f4ff;
+    width: 800px;
+    margin-left: 250px;
+    height: 100%;
+}
+
 .header {
-  align-items: center;
-  display: flex;
-  margin: 0 auto;
-  width: 800px;
+    display: flex;
+    height: auto;
+    justify-content: space-between;
+    width: 750px;
+    padding: 20px 0 20px 20px;
+}
+
+#title {
+    color: #808080;
+    font-size: 36px;
+    padding-top: 5px;
+    width: 80%;
+}
+
+#title > span {
+    color: #7fc2cc;
 }
 
 .back-button {
@@ -16,6 +35,12 @@ h2 {
   padding-top: 20px;
 }
 
+.list-container {
+  background: #defbff;
+  padding: 10px 0;
+  width: 100%;
+}
+
 #pages-list {
   margin: 0 auto;
   width: 710px;
@@ -23,11 +48,15 @@ h2 {
 
 .page {
   font-size: 15px;
-  margin: 10px 0;
-  width: 700px;
-  height: 15px;
+  margin: 15px 0;
+  width: 650px;
+  height: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.page a {
+  text-decoration: none;
 }
 
 .page:before {

@@ -8,11 +8,21 @@
 </head>
 
 <body>
-  <div class="header">
-    <button class="back-button">Back</button>
-    <h2>Recently visited pages</h2>
-  </div>
-  <ul id="pages-list"></ul>
+<div class="container">
+    <div class="header"> 
+        <div id="title">Recently viewed pages at </div>
+        <a href="options.html">
+            <button class="back-button">Back</button>
+        </a>
+        <div class="search-container">
+          <input id="search-text" type="text">
+          <button id="search-button">Search</button>
+        </div>
+    </div>
+    <div class="list-container">
+        <ul id="pages-list"></ul>
+    </div>
+</div>
 </body>
 </html>
 
