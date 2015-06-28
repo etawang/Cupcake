@@ -3,12 +3,15 @@ function buildHistoryListsDOM(divName, qparam, elements){
   var domainName = document.createElement('span');
   domainName.appendChild(document.createTextNode(qparam));
   var title = document.getElementById("title");
-  title.appendChild(domainName);
-
+  if (title.childNodes.length < 2) {
+    title.appendChild(domainName);
+  }
+ 
   var list = document.getElementById(divName);
   while (list.firstChild) {
       list.removeChild(list.firstChild);
   }
+ 
   for (var i = 0; i < elements.length; i++) {
     var entry = document.createElement('li');
     entry.className = "page";
